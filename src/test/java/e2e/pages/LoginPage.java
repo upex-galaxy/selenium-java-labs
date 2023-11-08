@@ -27,7 +27,7 @@ public class LoginPage {
         this.get = locator;
         this.Do = action;
         this.validate = new Assertion();
-        // * #2 LOCATORS DE PAGE => dentro del Constructor (requiere tipado Suppiler<>)
+        // * #2 LOCATORS DE PAGE => dentro del Constructor (requiere tipado Supplier<>)
         this.usernameInput = () -> this.get.ByTestId("username");
         this.passwordInput = () -> this.get.ByTestId("password");
         this.loginSubmitButton = () -> this.get.ByTestId("login-button");
@@ -54,4 +54,22 @@ public class LoginPage {
         this.submitLogin();
         this.validate.shouldContain(web.getCurrentUrl(), "inventory.html");
     }
+
+    public String getLoginError() {
+        return this.get.ByTestId("error").getText();
+
+    }
+
+    public void confirmTestPassed(String error, String value) {
+        if (error.equals(value)) {
+            System.out.println("Test Passed: " + '"' + getLoginError() + '"');
+        } else {
+            System.out.println("Test Failed: " + '"' + getLoginError() + '"');
+        }
+    }
+
+    public void navigateToEndpoint(String BASE_URL, String endpoint) {
+        this.web.get(BASE_URL + endpoint);
+    }
+
 }
