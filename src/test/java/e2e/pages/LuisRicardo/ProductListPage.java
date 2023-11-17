@@ -20,6 +20,7 @@ public class ProductListPage {
 
     private Supplier<List<WebElement>> addToCartButton;
     private Supplier<WebElement> totalCartItems;
+    private Supplier<List<WebElement>> getDescriptionProductText;
 
     public ProductListPage(Locator locator, Action action) {
         this.get = locator;
@@ -27,6 +28,7 @@ public class ProductListPage {
 
         this.addToCartButton = () -> this.get.Selectors("[data-test*=add-to-cart]");
         this.totalCartItems = () -> this.get.ByClass("shopping_cart_badge");
+        this.getDescriptionProductText = () -> this.get.ByClasses("inventory_item_description");
     }
 
     public void addItem(Integer product) {
@@ -37,5 +39,11 @@ public class ProductListPage {
         WebElement totalCartItems = this.totalCartItems.get();
         String priceValue = totalCartItems.getText();
         return priceValue;
+    }
+
+    public String getDescriptionProductText(Integer productIndex) {
+        WebElement getDescriptionProductText = this.getDescriptionProductText.get().get(productIndex);
+        String descriptionProductText = getDescriptionProductText.getText();
+        return descriptionProductText;
     }
 }
