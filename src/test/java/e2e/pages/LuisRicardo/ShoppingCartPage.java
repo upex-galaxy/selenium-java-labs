@@ -18,7 +18,6 @@ public class ShoppingCartPage {
     private Supplier<WebElement> shoppingCartButton;
     private Supplier<List<WebElement>> getDescriptionProductText;
     private Supplier<WebElement> checkoutButton;
-    // private Assertion validate;
 
     public ShoppingCartPage(Locator locator, Action action) {
 
