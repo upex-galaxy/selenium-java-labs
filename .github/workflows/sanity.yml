@@ -26,7 +26,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: 🧪Run Selenium tests
-      run: mvn clean verify -D it.test=ViewShoppingCartItemsTest -D headless=true
+      run: mvn clean verify -D it.test=LoginTest -D headless=true
 
     - name: 📊Upload Artifact Maven Report
       if: always()
