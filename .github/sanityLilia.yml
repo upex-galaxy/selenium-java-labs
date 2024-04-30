@@ -28,13 +28,13 @@ jobs:
     - name: 🧪Run Selenium tests
       run: mvn clean verify -D it.test=LiliaProductDetailTest -D headless=true
 
-    # - name: 📊Upload Artifact Maven Report
-    #   if: always()
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: regression-selenium-report
-    #     path: target/site/allure-maven-plugin
-    #     retention-days: 15
+    - name: 📊Upload Artifact Maven Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: regression-selenium-report
+        path: target/site/allure-maven-plugin
+        retention-days: 15
 
     - name: ✅Import Test Results to Xray
       if: always()
