@@ -3,8 +3,8 @@ run-name: ${{github.actor}}👨🏻‍🔬 ran SanityTest in ${{github.ref_name}
 
 #* El RUN de Pipeline para Sanity Test para verificación de archivos de prueba, tiene que usarse con su branch de tarea.
 on: [workflow_dispatch]
-# push:
-#     branches: ['test/GX3-367/iniciar-sesion-y-br-de-accesos']
+ push:
+     branches: ['test/GX3-3208/pdp-visualizar-detalles-del-item-producto']
 
 jobs:
   SanityTest:
