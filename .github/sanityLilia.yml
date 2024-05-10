@@ -4,7 +4,7 @@ run-name: ${{github.actor}}👨🏻‍🔬 ran SanityTest in ${{github.ref_name}
 #* El RUN de Pipeline para Sanity Test para verificación de archivos de prueba, tiene que usarse con su branch de tarea.
 on: [workflow_dispatch]
  push:
-     branches: ['test/GX3-3208/pdp-visualizar-detalles-del-item-producto']
+     branches: ['test/GX3-3180footer-acceder-a-las-redes-sociales']
 
 jobs:
   SanityTest:
@@ -26,7 +26,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: 🧪Run Selenium tests
-      run: mvn clean verify -D it.test=LiliaProductDetailTest -D headless=true
+      run: mvn clean verify -D it.test=LiliaSocialNetworksTest -D headless=true
 
     - name: 📊Upload Artifact Maven Report
       if: always()
