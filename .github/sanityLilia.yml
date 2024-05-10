@@ -1,0 +1,63 @@
+name: 🤖CI run Test Suite Execution🧪
+run-name: ${{github.actor}}👨🏻‍🔬 ran SanityTest in ${{github.ref_name}}
+
+#* El RUN de Pipeline para Sanity Test para verificación de archivos de prueba, tiene que usarse con su branch de tarea.
+on: [workflow_dispatch]
+ push:
+     branches: ['test/GX3-3208/pdp-visualizar-detalles-del-item-producto']
+
+jobs:
+  SanityTest:
+    name: Sanity Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 💻Checkout
+      uses: actions/checkout@v4
+
+    - name: 💿Set up JAVA 20 with Maven
+      uses: actions/setup-java@v4
+      with:
+        java-version: '20'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: 🧬Install All Dependencies with Maven
+      run: mvn -B package --file pom.xml
+
+    - name: 🧪Run Selenium tests
+      run: mvn clean verify -D it.test=LiliaProductDetailTest -D headless=true
+
+    - name: 📊Upload Artifact Maven Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: regression-selenium-report
+        path: target/site/allure-maven-plugin
+        retention-days: 15
+
+    - name: ✅Import Test Results to Xray
+      if: always()
+      uses: mikepenz/xray-action@v2
+      with: #todo: OPCIONES PARA IMPORTAR LOS RESULTADOS DE PRUEBA A JIRA XRAY:
+        username: ${{secrets.XRAY_CLIENT_ID}}
+        password: ${{secrets.XRAY_CLIENT_SECRET}}
+        testFormat: 'junit' #OPCIONES PARA CAMBIAR: 'junit' (para xml) o 'cucumber' (para json)
+        testPaths: 'target/failsafe-reports/TEST-*.xml'
+        testExecKey: 'GX3-3212' #? EDITAR AQUÍ EL TEST EXECUTION A IMPORTAR LAS PRUEBAS.
+        projectKey: 'GX3' #? EDITAR EN CASO DE TRABAJAR CON OTRO PROYECTO.
+
+  Ari-Slack-Notification:
+    needs: [SanityTest]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🔔Slack Notification of Done
+      if: env.SLACK_WEBHOOK != '' #? Corre este paso si la variable de entorno está definida
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: Ari✨
+        SLACK_MESSAGE: ':test_tube: SELENIUM-JAVA (SwagLabs): SANITY TEST IMPORTED TO JIRA :rocket:'
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_ICON: https://image.cdn2.seaart.ai/2023-12-06/clo9g0h4msbc73ac2sog/99e1abc36f32945cd4bacf5ee7448e96194545f7_high.webp
